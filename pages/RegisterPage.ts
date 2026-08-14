@@ -16,19 +16,19 @@ export interface RegisterFormData {
 }
 
 export class RegisterPage {
-    readonly firstNameInput: Locator;
-    readonly lastNameInput: Locator;
-    readonly dobInput: Locator;
-    readonly countryInput: Locator;
-    readonly postalCodeInput: Locator;
-    readonly houseNumberInput: Locator;
-    readonly streetInput: Locator;
-    readonly cityInput: Locator;
-    readonly stateInput: Locator;
-    readonly phoneInput: Locator;
-    readonly emailInput: Locator;
-    readonly passwordInput: Locator;
-    readonly submitButton: Locator;
+  readonly firstNameInput: Locator;
+  readonly lastNameInput: Locator;
+  readonly dobInput: Locator;
+  readonly countryInput: Locator;
+  readonly postalCodeInput: Locator;
+  readonly houseNumberInput: Locator;
+  readonly streetInput: Locator;
+  readonly cityInput: Locator;
+  readonly stateInput: Locator;
+  readonly phoneInput: Locator;
+  readonly emailInput: Locator;
+  readonly passwordInput: Locator;
+  readonly submitButton: Locator;
   constructor(private page: Page) {
     this.firstNameInput = page.locator('[data-test="first-name"]');
     this.lastNameInput = page.locator('[data-test="last-name"]');
@@ -68,7 +68,6 @@ export class RegisterPage {
   async submit() {
     await this.submitButton.click();
   }
-  
 }
 
 export function dobForAge(age: number, dayOffset: number = 0): string {
@@ -79,7 +78,6 @@ export function dobForAge(age: number, dayOffset: number = 0): string {
   const day = String(today.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
-
 
 function getDefaultValidRegisterData(): RegisterFormData {
   return {

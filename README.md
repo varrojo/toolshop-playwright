@@ -2,7 +2,7 @@
 
 Automated UI test suite for [practicesoftwaretesting.com](https://practicesoftwaretesting.com/) ("Toolshop"), an open-source e-commerce practice site purpose-built for testers. Written in TypeScript with [Playwright](https://playwright.dev/), following the Page Object Model.
 
-This project applies black-box testing techniques (boundary value analysis, equivalence partitioning, decision tables, error guessing) feature-by-feature, using the site's own built-in **Testing Guide** (18 features, each with acceptance criteria and testing guidance) as the starting map — cross-checked against the open-source project's own [Gherkin acceptance-criteria docs](https://github.com/testsmith-io/practice-software-testing) where the two disagree, and against live, manually-verified app behavior where *both* disagree with reality. That last step is where the bugs below were found.
+This project applies black-box testing techniques (boundary value analysis, equivalence partitioning, decision tables, error guessing) feature-by-feature, using the site's own built-in **Testing Guide** (18 features, each with acceptance criteria and testing guidance) as the starting map — cross-checked against the open-source project's own [Gherkin acceptance-criteria docs](https://github.com/testsmith-io/practice-software-testing) where the two disagree, and against live, manually-verified app behavior where _both_ disagree with reality. That last step is where the bugs below were found.
 
 ## Project Setup
 
@@ -23,15 +23,26 @@ npx playwright show-report                    # open the HTML report from the la
 ```
 
 **Config highlights** ([playwright.config.ts](playwright.config.ts)):
+
 - `baseURL` set to `https://practicesoftwaretesting.com/` — tests navigate with relative paths (e.g. `page.goto('/auth/register')`)
 - Runs against 3 browser projects: Chromium, Firefox, WebKit
 - `fullyParallel: true`, HTML reporter, trace captured on first retry
 
 **Structure:**
+
 - `pages/` — Page Object Models (one class per page, e.g. `RegisterPage.ts`)
 - `tests/` — spec files, one per feature/module (e.g. `register.spec.ts`)
 
 Since this suite runs against the real public site rather than a local instance, occasional latency-driven flakiness under concurrent multi-browser load is expected infrastructure noise, not a code bug — scoped `{ timeout: ... }` overrides are used where the default times out under load.
+
+**Code formatting** ([Prettier](https://prettier.io/), config in [.prettierrc.json](.prettierrc.json)):
+
+```bash
+npm run format          # format all files in place
+npm run format:check    # check formatting without writing (useful in CI)
+```
+
+In VS Code, `Shift+Option+F` (Mac) / `Shift+Alt+F` (Windows/Linux) formats the current file using Prettier once it's installed as your default formatter for the workspace.
 
 ### Git Setup
 
@@ -64,52 +75,52 @@ git push -u origin main
 
 The Testing Guide breaks the site into 18 features. Each is planned as its own spec file, worked one feature at a time.
 
-| # | Module | Status |
-|---|---|---|
-| 1 | Register | 🟡 In progress — 4 of 22 scenarios done |
-| 2 | Login | ⚪ Not started |
-| 3 | Forgot Password | ⚪ Not started |
-| 4 | Customer Profile | ⚪ Not started |
-| 5 | Customer Favorites | ⚪ Not started |
-| 6 | Customer Invoices | ⚪ Not started |
-| 7 | Customer Messages | ⚪ Not started |
-| 8 | Locked Account | ⚪ Not started |
-| 9 | Multi-Factor Authentication (MFA) | ⚪ Not started |
-| 10 | Contact Form | ⚪ Not started |
-| 11 | Product Listing | ⚪ Not started |
-| 12 | Category Page | ⚪ Not started |
-| 13 | Product Detail Page | ⚪ Not started |
-| 14 | Shopping Cart | ⚪ Not started |
-| 15 | Checkout + Payment | ⚪ Not started |
-| 16 | Geolocation Discount | ⚪ Not started |
-| 17 | Combined Product Discount | ⚪ Not started |
+| #   | Module                            | Status                                  |
+| --- | --------------------------------- | --------------------------------------- |
+| 1   | Register                          | 🟡 In progress — 4 of 22 scenarios done |
+| 2   | Login                             | ⚪ Not started                          |
+| 3   | Forgot Password                   | ⚪ Not started                          |
+| 4   | Customer Profile                  | ⚪ Not started                          |
+| 5   | Customer Favorites                | ⚪ Not started                          |
+| 6   | Customer Invoices                 | ⚪ Not started                          |
+| 7   | Customer Messages                 | ⚪ Not started                          |
+| 8   | Locked Account                    | ⚪ Not started                          |
+| 9   | Multi-Factor Authentication (MFA) | ⚪ Not started                          |
+| 10  | Contact Form                      | ⚪ Not started                          |
+| 11  | Product Listing                   | ⚪ Not started                          |
+| 12  | Category Page                     | ⚪ Not started                          |
+| 13  | Product Detail Page               | ⚪ Not started                          |
+| 14  | Shopping Cart                     | ⚪ Not started                          |
+| 15  | Checkout + Payment                | ⚪ Not started                          |
+| 16  | Geolocation Discount              | ⚪ Not started                          |
+| 17  | Combined Product Discount         | ⚪ Not started                          |
 
 ### Register — 22-scenario plan
 
-| # | Scenario | Expected result | Status |
-|---|---|---|---|
-| 1 | dob → age 17 | "Customer must be 18 years old." | ✅ Done |
-| 2 | dob → age 18 exactly | Redirect to `/auth/login` — **see Issue #1**, real behavior requires 18 years + 1 day | ✅ Done |
-| 3 | dob → age 75 | Redirect to `/auth/login` | ✅ Done |
-| 4 | dob → age 93 | "Customer must be younger than 75 years old." — **see Issue #2**, real ceiling is 92, not the documented 75/76 | ✅ Done |
-| 5 | First name missing | "First name is required" | ⚪ Planned |
-| 6 | Last name missing | "Last name is required" | ⚪ Planned |
-| 7 | Email missing | "Email is required" | ⚪ Planned |
-| 8 | Password missing | "Password is required" | ⚪ Planned |
-| 9 | Password, 7 characters | "at least 8 characters" requirement bullet stays unfulfilled (real-time UI state, not a submit error) | ⚪ Planned |
-| 10 | Password, 8 characters | Requirement bullet fulfilled | ⚪ Planned |
-| 11 | Known-breached password | "The given password has appeared in a data leak. Please choose a different password." | ⚪ Planned |
-| 12 | First name, 41 characters | "The first name field must not be greater than 40 characters." | ⚪ Planned |
-| 13 | Last name, 21 characters | "The last name field must not be greater than 20 characters." | ⚪ Planned |
-| 14 | Street, 71 characters | "The address.street field must not be greater than 70 characters." | ⚪ Planned |
-| 15 | City, 41 characters | "The address.city field must not be greater than 40 characters." | ⚪ Planned |
-| 16 | State, 41 characters | "The address.state field must not be greater than 40 characters." | ⚪ Planned |
-| 17 | Postal code, 11 characters | "The address.postal code field must not be greater than 10 characters." | ⚪ Planned |
-| 18 | Phone, 25 characters | "The phone field must not be greater than 24 characters." | ⚪ Planned |
-| 19 | Phone contains `+` | "Only numbers are allowed." | ⚪ Planned |
-| 20 | Email malformed / oversized local-part | "Email format is invalid" | ⚪ Planned |
-| 21 | Email already registered | "A customer with this email address already exists." — **see Issue #3**, differs from the AC's documented text | ⚪ Planned |
-| 22 | All fields valid | Redirect to `/auth/login` | ⚪ Planned |
+| #   | Scenario                               | Expected result                                                                                                | Status     |
+| --- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------- |
+| 1   | dob → age 17                           | "Customer must be 18 years old."                                                                               | ✅ Done    |
+| 2   | dob → age 18 exactly                   | Redirect to `/auth/login` — **see Issue #1**, real behavior requires 18 years + 1 day                          | ✅ Done    |
+| 3   | dob → age 75                           | Redirect to `/auth/login`                                                                                      | ✅ Done    |
+| 4   | dob → age 93                           | "Customer must be younger than 75 years old." — **see Issue #2**, real ceiling is 92, not the documented 75/76 | ✅ Done    |
+| 5   | First name missing                     | "First name is required"                                                                                       | ⚪ Planned |
+| 6   | Last name missing                      | "Last name is required"                                                                                        | ⚪ Planned |
+| 7   | Email missing                          | "Email is required"                                                                                            | ⚪ Planned |
+| 8   | Password missing                       | "Password is required"                                                                                         | ⚪ Planned |
+| 9   | Password, 7 characters                 | "at least 8 characters" requirement bullet stays unfulfilled (real-time UI state, not a submit error)          | ⚪ Planned |
+| 10  | Password, 8 characters                 | Requirement bullet fulfilled                                                                                   | ⚪ Planned |
+| 11  | Known-breached password                | "The given password has appeared in a data leak. Please choose a different password."                          | ⚪ Planned |
+| 12  | First name, 41 characters              | "The first name field must not be greater than 40 characters."                                                 | ⚪ Planned |
+| 13  | Last name, 21 characters               | "The last name field must not be greater than 20 characters."                                                  | ⚪ Planned |
+| 14  | Street, 71 characters                  | "The address.street field must not be greater than 70 characters."                                             | ⚪ Planned |
+| 15  | City, 41 characters                    | "The address.city field must not be greater than 40 characters."                                               | ⚪ Planned |
+| 16  | State, 41 characters                   | "The address.state field must not be greater than 40 characters."                                              | ⚪ Planned |
+| 17  | Postal code, 11 characters             | "The address.postal code field must not be greater than 10 characters."                                        | ⚪ Planned |
+| 18  | Phone, 25 characters                   | "The phone field must not be greater than 24 characters."                                                      | ⚪ Planned |
+| 19  | Phone contains `+`                     | "Only numbers are allowed."                                                                                    | ⚪ Planned |
+| 20  | Email malformed / oversized local-part | "Email format is invalid"                                                                                      | ⚪ Planned |
+| 21  | Email already registered               | "A customer with this email address already exists." — **see Issue #3**, differs from the AC's documented text | ⚪ Planned |
+| 22  | All fields valid                       | Redirect to `/auth/login`                                                                                      | ⚪ Planned |
 
 ## Issues Found
 
@@ -117,9 +128,10 @@ Confirmed by direct, live testing against the app (codegen, screenshots, binary-
 
 ### Issue #1 — Age-18 boundary is off by one day
 
-The in-app Testing Guide's AC states *"Age must be between 18 and 75 inclusive."* In practice, registering with a date of birth that makes the user exactly 18 years old **today** is rejected with the same error as being underage ("Customer must be 18 years old."). A full day must pass after the 18th birthday before registration succeeds.
+The in-app Testing Guide's AC states _"Age must be between 18 and 75 inclusive."_ In practice, registering with a date of birth that makes the user exactly 18 years old **today** is rejected with the same error as being underage ("Customer must be 18 years old."). A full day must pass after the 18th birthday before registration succeeds.
 
 Verified via binary search on the day offset:
+
 - `age 18, today` → rejected
 - `age 18, as of yesterday` → accepted
 - `age 18, as of tomorrow` (still 17) → correctly rejected
