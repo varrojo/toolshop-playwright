@@ -77,7 +77,7 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 
 | #   | Module                            | Status                                  |
 | --- | --------------------------------- | --------------------------------------- |
-| 1   | Register                          | 🟡 In progress — 4 of 22 scenarios done |
+| 1   | Register                          | 🟡 In progress — 9 of 22 scenarios done |
 | 2   | Login                             | ⚪ Not started                          |
 | 3   | Forgot Password                   | ⚪ Not started                          |
 | 4   | Customer Profile                  | ⚪ Not started                          |
@@ -103,23 +103,23 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 | 2   | dob → age 18 exactly                   | Redirect to `/auth/login` — **see Issue #1**, real behavior requires 18 years + 1 day                          | ✅ Done    |
 | 3   | dob → age 75                           | Redirect to `/auth/login`                                                                                      | ✅ Done    |
 | 4   | dob → age 93                           | "Customer must be younger than 75 years old." — **see Issue #2**, real ceiling is 92, not the documented 75/76 | ✅ Done    |
-| 5   | First name missing                     | "First name is required"                                                                                       | ⚪ Planned |
-| 6   | Last name missing                      | "Last name is required"                                                                                        | ⚪ Planned |
-| 7   | Email missing                          | "Email is required"                                                                                            | ⚪ Planned |
+| 5   | First name missing                     | "First name is required"                                                                                       | ✅ Done    |
+| 6   | Last name missing                      | "Last name is required"                                                                                        | ✅ Done    |
+| 7   | Email missing                          | "Email is required"                                                                                            | ✅ Done    |
 | 8   | Password missing                       | "Password is required"                                                                                         | ⚪ Planned |
 | 9   | Password, 7 characters                 | "at least 8 characters" requirement bullet stays unfulfilled (real-time UI state, not a submit error)          | ⚪ Planned |
 | 10  | Password, 8 characters                 | Requirement bullet fulfilled                                                                                   | ⚪ Planned |
 | 11  | Known-breached password                | "The given password has appeared in a data leak. Please choose a different password."                          | ⚪ Planned |
-| 12  | First name, 41 characters              | "The first name field must not be greater than 40 characters."                                                 | ⚪ Planned |
-| 13  | Last name, 21 characters               | "The last name field must not be greater than 20 characters."                                                  | ⚪ Planned |
+| 12  | First name, 41 characters              | "The first name field must not be greater than 40 characters."                                                 | ✅ Done    |
+| 13  | Last name, 21 characters               | "The last name field must not be greater than 20 characters."                                                  | ✅ Done    |
 | 14  | Street, 71 characters                  | "The address.street field must not be greater than 70 characters."                                             | ⚪ Planned |
 | 15  | City, 41 characters                    | "The address.city field must not be greater than 40 characters."                                               | ⚪ Planned |
 | 16  | State, 41 characters                   | "The address.state field must not be greater than 40 characters."                                              | ⚪ Planned |
 | 17  | Postal code, 11 characters             | "The address.postal code field must not be greater than 10 characters."                                        | ⚪ Planned |
 | 18  | Phone, 25 characters                   | "The phone field must not be greater than 24 characters."                                                      | ⚪ Planned |
 | 19  | Phone contains `+`                     | "Only numbers are allowed."                                                                                    | ⚪ Planned |
-| 20  | Email malformed / oversized local-part | "Email format is invalid"                                                                                      | ⚪ Planned |
-| 21  | Email already registered               | "A customer with this email address already exists." — **see Issue #3**, differs from the AC's documented text | ⚪ Planned |
+| 20  | Email malformed / oversized local-part | "Email format is invalid" — **see Issue #4**, a missing-TLD email (`qatest123@gmail`) does NOT trigger this    | ✅ Done    |
+| 21  | Email already registered               | "A customer with this email address already exists." — **see Issue #3**, differs from the AC's documented text | ✅ Done    |
 | 22  | All fields valid                       | Redirect to `/auth/login`                                                                                      | ⚪ Planned |
 
 ## Issues Found
@@ -155,6 +155,12 @@ The AC (both the in-app Testing Guide and the open-source repo's `v5.md`) docume
 The real error returned by the app is:
 
 > "A customer with this email address already exists."
+
+### Issue #4 — Email format validation accepts a missing TLD
+
+Manually registering with `qatest123@gmail` (no top-level domain, e.g. no `.com`) succeeded — the account was created and the app redirected to `/auth/login`, rather than rejecting it with "Email format is invalid." The format check does not require a TLD after the `@domain` part.
+
+Relevant to scenario #20 (Email malformed) — this specific input isn't a valid test case for that scenario's expected "Email format is invalid" error, since the app accepts it. No automated test covers this yet; it was confirmed via manual/live testing only.
 
 ### Open question — Email max-length is ambiguous
 

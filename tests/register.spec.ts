@@ -50,4 +50,86 @@ test.describe('Register Page', () => {
       await expect(page.getByText('Customer must be younger than 75 years old.')).toBeVisible();
     });
   });
+
+  test.describe('First Name Validation', () => {
+    test('should display error message for empty first name', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        firstName: '',
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('First name is required')).toBeVisible();
+    });
+
+    test('should display error message for first name with more than 40 characters', async ({
+      page,
+    }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        firstName: 'A'.repeat(41),
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(
+        page.getByText('The first name field must not be greater than 40 characters.'),
+      ).toBeVisible();
+    });
+  });
+  test.describe('Last Name Validation', () => {
+    test('should display error message for empty last name', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        lastName: '',
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('Last name is required')).toBeVisible();
+    });
+
+    test('should display error message for last name with more than 20 characters', async ({
+      page,
+    }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        lastName: 'A'.repeat(21),
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(
+        page.getByText('The last name field must not be greater than 20 characters.'),
+      ).toBeVisible();
+    });
+  });
+
+  test.describe('Email Address Validation', () => {
+    test('should display error message for empty email address', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        email: '',
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('Email is required')).toBeVisible();
+    });
+
+    test('should display error message for invalid email address format', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        email: 'invalidemail',
+      };
+
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('Email format is invalid')).toBeVisible();
+    });
+
+    test('should display error message for used email address', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        email: 'emailalreadyexist@test.com',
+      };
+
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      
+      await registerPage.goto();
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('A customer with this email address already exists.')).toBeVisible();
+    });
+  });
 });
