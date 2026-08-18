@@ -154,11 +154,23 @@ test.describe('Register Page', () => {
       await expect(page.getByText('The given password has appeared in a data leak. Please choose a different password.')).toBeVisible();
     });
 
-    test('should display green text for password that satisfied the bullet requirements', async ({ page }) => {
+    test('should not display green text for password that does not satisfy the bullet requirements', async ({ page }) => {
       const invalidData: Partial<RegisterFormData> = {
-        password: 'P@ssword123!'
+        password: 'passwor'
       };
       await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('Be at least 8 characters long')).not.toHaveClass(/text-success/);
+      await expect(page.getByText('Contain both uppercase and lowercase letters')).not.toHaveClass(/text-success/);
+      await expect(page.getByText('Include at least one number')).not.toHaveClass(/text-success/);
+      await expect(page.getByText('Have at least one special symbol (e.g., @, #, $, etc.)')).not.toHaveClass(/text-success/);
+    });
+
+    test('should display green text for password that satisfied the bullet requirements', async ({ page }) => {
+      const validPassword: Partial<RegisterFormData> = {
+        password: 'P@ssword123'
+      };
+      await registerPage.fillForm(validPassword);
       await registerPage.submit();
       await expect(page.getByText('Be at least 8 characters long')).toHaveClass(/text-success/);
       await expect(page.getByText('Contain both uppercase and lowercase letters')).toHaveClass(/text-success/);
