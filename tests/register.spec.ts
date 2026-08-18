@@ -292,4 +292,45 @@ test.describe('Register Page', () => {
       });
     });
   });
+  test.describe('Phone Number Validation', () => {
+    test('should display error message for empty phone number', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        phone: ''
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('Phone is required')).toBeVisible();
+    });
+    test('should display error message for phone number with "+" sign', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        phone: '+639012345678'
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('Only numbers are allowed.')).toBeVisible();
+    });
+    test('should display error message for phone number with letters', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        phone: 'A'
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('Only numbers are allowed.')).toBeVisible();
+    });
+    test('should display error message for phone number greater than 24 characters', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        phone: '1'.repeat(25)
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('The phone field must not be greater than 24 characters.')).toBeVisible();
+    });
+  });
+  test.describe('All fields are valid', () => {
+    test('should successfully create a user and redirect to login page', async ({ page }) => {
+      await registerPage.fillForm();
+      await registerPage.submit();
+      await expect(page).toHaveURL(/.*\/auth\/login/);
+    });
+  });
 });

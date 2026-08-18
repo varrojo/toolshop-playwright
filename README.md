@@ -77,7 +77,7 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 
 | #  | Module                            | Status                                  |
 | -- | --------------------------------- | --------------------------------------- |
-| 1  | Register                          | 🟡 In progress — 15 of 31 scenarios done |
+| 1  | Register                          | 🟡 In progress — 31 of 32 scenarios done |
 | 2  | Login                             | ⚪ Not started                           |
 | 3  | Forgot Password                   | ⚪ Not started                           |
 | 4  | Customer Profile                  | ⚪ Not started                           |
@@ -95,7 +95,7 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 | 16 | Geolocation Discount              | ⚪ Not started                           |
 | 17 | Combined Product Discount         | ⚪ Not started                           |
 
-### Register — 31-scenario plan
+### Register — 32-scenario plan
 
 | #  | Scenario                               | Expected result                                                                                                                                                  | Status    |
 | -- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
@@ -112,24 +112,25 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 | 11 | Known-breached password                | "The given password has appeared in a data leak. Please choose a different password."                                                                            | ✅ Done    |
 | 12 | First name, 41 characters              | "The first name field must not be greater than 40 characters."                                                                                                   | ✅ Done    |
 | 13 | Last name, 21 characters               | "The last name field must not be greater than 20 characters."                                                                                                    | ✅ Done    |
-| 14 | Street, 71 characters                  | "The address.street field must not be greater than 70 characters."                                                                                               | ⚪ Planned |
-| 15 | City, 41 characters                    | "The address.city field must not be greater than 40 characters."                                                                                                 | ⚪ Planned |
-| 16 | State, 41 characters                   | "The address.state field must not be greater than 40 characters."                                                                                                | ⚪ Planned |
-| 17 | Postal code, 11 characters             | "The address.postal code field must not be greater than 10 characters."                                                                                          | ⚪ Planned |
-| 18 | Phone, 25 characters                   | "The phone field must not be greater than 24 characters."                                                                                                        | ⚪ Planned |
-| 19 | Phone contains `+`                     | "Only numbers are allowed."                                                                                                                                      | ⚪ Planned |
+| 14 | Street, 71 characters                  | "The address.street field must not be greater than 70 characters."                                                                                               | ✅ Done    |
+| 15 | City, 41 characters                    | "The address.city field must not be greater than 40 characters."                                                                                                 | ✅ Done    |
+| 16 | State, 41 characters                   | "The address.state field must not be greater than 40 characters." — real-time UI message renders slower in webkit, needs a scoped `{ timeout: 10000 }` override  | ✅ Done    |
+| 17 | Postal code, 11 characters             | "The address.postal code field must not be greater than 10 characters."                                                                                          | ✅ Done    |
+| 18 | Phone, 25 characters                   | "The phone field must not be greater than 24 characters."                                                                                                        | ✅ Done    |
+| 19 | Phone contains `+`                     | "Only numbers are allowed."                                                                                                                                      | ✅ Done    |
 | 20 | Email malformed / oversized local-part | "Email format is invalid" — **see Issue #4**, a missing-TLD email (`qatest123@gmail`) does NOT trigger this                                                      | ✅ Done    |
 | 21 | Email already registered               | "A customer with this email address already exists." — **see Issue #3**, differs from the AC's documented text                                                   | ✅ Done    |
 | 22 | All fields valid                       | Redirect to `/auth/login`                                                                                                                                        | ⚪ Planned |
 | 23 | Date of Birth missing                  | "Date of Birth is required"                                                                                                                                      | ✅ Done    |
 | 24 | Date of Birth, invalid format          | "Please enter a valid date in YYYY-MM-DD format."                                                                                                                | ✅ Done    |
-| 25 | Country missing                        | "Country is required"                                                                                                                                            | ⚪ Planned |
-| 26 | Postcode missing                       | "Postcode is required"                                                                                                                                           | ⚪ Planned |
-| 27 | House number missing                   | "House number is required"                                                                                                                                       | ⚪ Planned |
-| 28 | Street missing                         | "Street is required"                                                                                                                                             | ⚪ Planned |
-| 29 | City missing                           | "City is required"                                                                                                                                               | ⚪ Planned |
-| 30 | State missing                          | "State is required"                                                                                                                                              | ⚪ Planned |
-| 31 | Phone missing                          | "Phone is required."                                                                                                                                             | ⚪ Planned |
+| 25 | Country missing                        | "Country is required"                                                                                                                                            | ✅ Done    |
+| 26 | Postcode missing                       | "Postcode is required"                                                                                                                                           | ✅ Done    |
+| 27 | House number missing                   | "House number is required"                                                                                                                                       | ✅ Done    |
+| 28 | Street missing                         | "Street is required"                                                                                                                                             | ✅ Done    |
+| 29 | City missing                           | "City is required"                                                                                                                                               | ✅ Done    |
+| 30 | State missing                          | "State is required"                                                                                                                                              | ✅ Done    |
+| 31 | Phone missing                          | "Phone is required."                                                                                                                                             | ✅ Done    |
+| 32 | Phone contains letters                 | "Only numbers are allowed." — bonus error-guessing case beyond the original plan                                                                                 | ✅ Done    |
 
 ## Issues Found
 
