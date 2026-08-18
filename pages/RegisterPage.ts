@@ -54,7 +54,9 @@ export class RegisterPage {
     await this.firstNameInput.fill(data.firstName);
     await this.lastNameInput.fill(data.lastName);
     await this.dobInput.fill(data.dob);
-    await this.countryInput.selectOption(data.country);
+    if (data.country) {
+      await this.countryInput.selectOption(data.country);
+    }
     await this.postalCodeInput.fill(data.postalCode);
     await this.houseNumberInput.fill(data.houseNumber);
     await this.streetInput.fill(data.street);
@@ -85,13 +87,13 @@ function getDefaultValidRegisterData(): RegisterFormData {
     lastName: 'Doe',
     dob: '1990-11-17',
     country: 'Japan',
-    postalCode: '12345',
+    postalCode: '1234567890',
     houseNumber: '123',
     street: 'Main Street',
     city: 'Shibuya',
     state: 'Tokyo',
     phone: '5551234',
     email: `john.doe.${Date.now()}@example.com`,
-    password: 'P@$$J0hnD03',
+    password: 'P@$$J0hnD03'
   };
 }

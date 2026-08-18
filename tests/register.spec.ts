@@ -178,4 +178,118 @@ test.describe('Register Page', () => {
       await expect(page.getByText('Have at least one special symbol (e.g., @, #, $, etc.)')).toHaveClass(/text-success/);
     });
   });
+
+  test.describe('Date of Birth Validation', () => {
+    test('should display error message for empty date of birth', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        dob: ''
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('Date of Birth is required')).toBeVisible();
+    });
+    test('should display error message for invalid date of birth format', async ({ page }) => {
+      const invalidData: Partial<RegisterFormData> = {
+        dob: '12/13/0000'
+      };
+      await registerPage.fillForm(invalidData);
+      await registerPage.submit();
+      await expect(page.getByText('Please enter a valid date in YYYY-MM-DD format.')).toBeVisible();
+    });
+  });
+
+  test.describe('Address Validation', () => {
+    test.describe('Country', () => {
+      test('should display error message for empty country', async ({ page }) => {
+        const invalidData: Partial<RegisterFormData> = {
+          country: ''
+        };
+        await registerPage.fillForm(invalidData);
+        await registerPage.submit();
+        await expect(page.getByText('Country is required')).toBeVisible();
+      });
+    });
+    test.describe('Postal Code', () => {
+      test('should display error message for empty postal code', async ({ page }) => {
+        const invalidData: Partial<RegisterFormData> = {
+          postalCode: ''
+        };
+        await registerPage.fillForm(invalidData);
+        await registerPage.submit();
+        await expect(page.getByText('Postcode is required')).toBeVisible();
+      });
+      test('should display error message for post code more than 10 characters', async ({ page }) => {
+        const invalidData: Partial<RegisterFormData> = {
+          postalCode: '1'.repeat(11)
+        };
+        await registerPage.fillForm(invalidData);
+        await registerPage.submit();
+        await expect(page.getByText('The address.postal code field must not be greater than 10 characters.')).toBeVisible();
+      });
+    });
+    test.describe('House Number', () => {
+      test('should display error message for empty house number', async ({ page }) => {
+        const invalidData: Partial<RegisterFormData> = {
+          houseNumber: ''
+        };
+        await registerPage.fillForm(invalidData);
+        await registerPage.submit();
+        await expect(page.getByText('House number is required')).toBeVisible();
+      });
+    });
+    test.describe('Street', () => {
+      test('should display error message for empty street', async ({ page }) => {
+        const invalidData: Partial<RegisterFormData> = {
+          street: ''
+        };
+        await registerPage.fillForm(invalidData);
+        await registerPage.submit();
+        await expect(page.getByText('Street is required')).toBeVisible();
+      });
+      test('should display error message for street more than 70 characters', async ({ page }) => {
+        const invalidData: Partial<RegisterFormData> = {
+          street: 'A'.repeat(71)
+        };
+        await registerPage.fillForm(invalidData);
+        await registerPage.submit();
+        await expect(page.getByText('The address.street field must not be greater than 70 characters.')).toBeVisible();
+      });
+    });
+    test.describe('City', () => {
+      test('should display error message for empty city', async ({ page }) => {
+        const invalidData: Partial<RegisterFormData> = {
+          city: ''
+        };
+        await registerPage.fillForm(invalidData);
+        await registerPage.submit();
+        await expect(page.getByText('City is required')).toBeVisible();
+      });
+      test('should display error message for city more than 40 characters', async ({ page }) => {
+        const invalidData: Partial<RegisterFormData> = {
+          city: 'A'.repeat(41)
+        };
+        await registerPage.fillForm(invalidData);
+        await registerPage.submit();
+        await expect(page.getByText('The address.city field must not be greater than 40 characters.')).toBeVisible();
+      });
+    });
+    test.describe('State', () => {
+      test('should display error message for empty state', async ({ page }) => {
+        const invalidData: Partial<RegisterFormData> = {
+          state: ''
+        };
+        await registerPage.fillForm(invalidData);
+        await registerPage.submit();
+        await expect(page.getByText('State is required')).toBeVisible();
+      });
+      test('should display error message for state more than 40 characters', async ({ page }) => {
+        const invalidData: Partial<RegisterFormData> = {
+          state: 'A'.repeat(41)
+        };
+        await registerPage.fillForm(invalidData);
+        await registerPage.submit();
+        await expect(page.getByText('The address.state field must not be greater than 40 characters.')).toBeVisible({ timeout: 10000 });
+      });
+    });
+  });
 });

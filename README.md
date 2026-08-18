@@ -77,7 +77,7 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 
 | #  | Module                            | Status                                  |
 | -- | --------------------------------- | --------------------------------------- |
-| 1  | Register                          | 🟡 In progress — 13 of 22 scenarios done |
+| 1  | Register                          | 🟡 In progress — 15 of 31 scenarios done |
 | 2  | Login                             | ⚪ Not started                           |
 | 3  | Forgot Password                   | ⚪ Not started                           |
 | 4  | Customer Profile                  | ⚪ Not started                           |
@@ -95,7 +95,7 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 | 16 | Geolocation Discount              | ⚪ Not started                           |
 | 17 | Combined Product Discount         | ⚪ Not started                           |
 
-### Register — 22-scenario plan
+### Register — 31-scenario plan
 
 | #  | Scenario                               | Expected result                                                                                                                                                  | Status    |
 | -- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
@@ -121,6 +121,15 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 | 20 | Email malformed / oversized local-part | "Email format is invalid" — **see Issue #4**, a missing-TLD email (`qatest123@gmail`) does NOT trigger this                                                      | ✅ Done    |
 | 21 | Email already registered               | "A customer with this email address already exists." — **see Issue #3**, differs from the AC's documented text                                                   | ✅ Done    |
 | 22 | All fields valid                       | Redirect to `/auth/login`                                                                                                                                        | ⚪ Planned |
+| 23 | Date of Birth missing                  | "Date of Birth is required"                                                                                                                                      | ✅ Done    |
+| 24 | Date of Birth, invalid format          | "Please enter a valid date in YYYY-MM-DD format."                                                                                                                | ✅ Done    |
+| 25 | Country missing                        | "Country is required"                                                                                                                                            | ⚪ Planned |
+| 26 | Postcode missing                       | "Postcode is required"                                                                                                                                           | ⚪ Planned |
+| 27 | House number missing                   | "House number is required"                                                                                                                                       | ⚪ Planned |
+| 28 | Street missing                         | "Street is required"                                                                                                                                             | ⚪ Planned |
+| 29 | City missing                           | "City is required"                                                                                                                                               | ⚪ Planned |
+| 30 | State missing                          | "State is required"                                                                                                                                              | ⚪ Planned |
+| 31 | Phone missing                          | "Phone is required."                                                                                                                                             | ⚪ Planned |
 
 ## Issues Found
 
