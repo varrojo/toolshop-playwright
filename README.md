@@ -75,62 +75,62 @@ git push -u origin main
 
 The Testing Guide breaks the site into 18 features. Each is planned as its own spec file, worked one feature at a time.
 
-| #  | Module                            | Status                                  |
-| -- | --------------------------------- | --------------------------------------- |
-| 1  | Register                          | 🟡 In progress — 31 of 32 scenarios done |
-| 2  | Login                             | ⚪ Not started                           |
-| 3  | Forgot Password                   | ⚪ Not started                           |
-| 4  | Customer Profile                  | ⚪ Not started                           |
-| 5  | Customer Favorites                | ⚪ Not started                           |
-| 6  | Customer Invoices                 | ⚪ Not started                           |
-| 7  | Customer Messages                 | ⚪ Not started                           |
-| 8  | Locked Account                    | ⚪ Not started                           |
-| 9  | Multi-Factor Authentication (MFA) | ⚪ Not started                           |
-| 10 | Contact Form                      | ⚪ Not started                           |
-| 11 | Product Listing                   | ⚪ Not started                           |
-| 12 | Category Page                     | ⚪ Not started                           |
-| 13 | Product Detail Page               | ⚪ Not started                           |
-| 14 | Shopping Cart                     | ⚪ Not started                           |
-| 15 | Checkout + Payment                | ⚪ Not started                           |
-| 16 | Geolocation Discount              | ⚪ Not started                           |
-| 17 | Combined Product Discount         | ⚪ Not started                           |
+| #  | Module                            | Status                           |
+| -- | --------------------------------- | -------------------------------- |
+| 1  | Register                          | 🟢 Done — 32 of 32 scenarios done |
+| 2  | Login                             | ⚪ Not started                    |
+| 3  | Forgot Password                   | ⚪ Not started                    |
+| 4  | Customer Profile                  | ⚪ Not started                    |
+| 5  | Customer Favorites                | ⚪ Not started                    |
+| 6  | Customer Invoices                 | ⚪ Not started                    |
+| 7  | Customer Messages                 | ⚪ Not started                    |
+| 8  | Locked Account                    | ⚪ Not started                    |
+| 9  | Multi-Factor Authentication (MFA) | ⚪ Not started                    |
+| 10 | Contact Form                      | ⚪ Not started                    |
+| 11 | Product Listing                   | ⚪ Not started                    |
+| 12 | Category Page                     | ⚪ Not started                    |
+| 13 | Product Detail Page               | ⚪ Not started                    |
+| 14 | Shopping Cart                     | ⚪ Not started                    |
+| 15 | Checkout + Payment                | ⚪ Not started                    |
+| 16 | Geolocation Discount              | ⚪ Not started                    |
+| 17 | Combined Product Discount         | ⚪ Not started                    |
 
 ### Register — 32-scenario plan
 
-| #  | Scenario                               | Expected result                                                                                                                                                  | Status    |
-| -- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| 1  | dob → age 17                           | "Customer must be 18 years old."                                                                                                                                 | ✅ Done    |
-| 2  | dob → age 18 exactly                   | Redirect to `/auth/login` — **see Issue #1**, real behavior requires 18 years + 1 day                                                                            | ✅ Done    |
-| 3  | dob → age 75                           | Redirect to `/auth/login`                                                                                                                                        | ✅ Done    |
-| 4  | dob → age 93                           | "Customer must be younger than 75 years old." — **see Issue #2**, real ceiling is 92, not the documented 75/76                                                   | ✅ Done    |
-| 5  | First name missing                     | "First name is required"                                                                                                                                         | ✅ Done    |
-| 6  | Last name missing                      | "Last name is required"                                                                                                                                          | ✅ Done    |
-| 7  | Email missing                          | "Email is required"                                                                                                                                              | ✅ Done    |
-| 8  | Password missing                       | "Password is required"                                                                                                                                           | ✅ Done    |
-| 9  | Password, 7 characters                 | All requirement bullets stay unfulfilled (real-time UI state) — **see Issue #5**, submit error text claims a 6-character minimum but the app actually enforces 8 | ✅ Done    |
-| 10 | Password, meets all requirements       | All requirement bullets turn green                                                                                                                               | ✅ Done    |
-| 11 | Known-breached password                | "The given password has appeared in a data leak. Please choose a different password."                                                                            | ✅ Done    |
-| 12 | First name, 41 characters              | "The first name field must not be greater than 40 characters."                                                                                                   | ✅ Done    |
-| 13 | Last name, 21 characters               | "The last name field must not be greater than 20 characters."                                                                                                    | ✅ Done    |
-| 14 | Street, 71 characters                  | "The address.street field must not be greater than 70 characters."                                                                                               | ✅ Done    |
-| 15 | City, 41 characters                    | "The address.city field must not be greater than 40 characters."                                                                                                 | ✅ Done    |
-| 16 | State, 41 characters                   | "The address.state field must not be greater than 40 characters." — real-time UI message renders slower in webkit, needs a scoped `{ timeout: 10000 }` override  | ✅ Done    |
-| 17 | Postal code, 11 characters             | "The address.postal code field must not be greater than 10 characters."                                                                                          | ✅ Done    |
-| 18 | Phone, 25 characters                   | "The phone field must not be greater than 24 characters."                                                                                                        | ✅ Done    |
-| 19 | Phone contains `+`                     | "Only numbers are allowed."                                                                                                                                      | ✅ Done    |
-| 20 | Email malformed / oversized local-part | "Email format is invalid" — **see Issue #4**, a missing-TLD email (`qatest123@gmail`) does NOT trigger this                                                      | ✅ Done    |
-| 21 | Email already registered               | "A customer with this email address already exists." — **see Issue #3**, differs from the AC's documented text                                                   | ✅ Done    |
-| 22 | All fields valid                       | Redirect to `/auth/login`                                                                                                                                        | ⚪ Planned |
-| 23 | Date of Birth missing                  | "Date of Birth is required"                                                                                                                                      | ✅ Done    |
-| 24 | Date of Birth, invalid format          | "Please enter a valid date in YYYY-MM-DD format."                                                                                                                | ✅ Done    |
-| 25 | Country missing                        | "Country is required"                                                                                                                                            | ✅ Done    |
-| 26 | Postcode missing                       | "Postcode is required"                                                                                                                                           | ✅ Done    |
-| 27 | House number missing                   | "House number is required"                                                                                                                                       | ✅ Done    |
-| 28 | Street missing                         | "Street is required"                                                                                                                                             | ✅ Done    |
-| 29 | City missing                           | "City is required"                                                                                                                                               | ✅ Done    |
-| 30 | State missing                          | "State is required"                                                                                                                                              | ✅ Done    |
-| 31 | Phone missing                          | "Phone is required."                                                                                                                                             | ✅ Done    |
-| 32 | Phone contains letters                 | "Only numbers are allowed." — bonus error-guessing case beyond the original plan                                                                                 | ✅ Done    |
+| #  | Scenario                               | Expected result                                                                                                                                                  | Status |
+| -- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 1  | dob → age 17                           | "Customer must be 18 years old."                                                                                                                                 | ✅ Done |
+| 2  | dob → age 18 exactly                   | Redirect to `/auth/login` — **see Issue #1**, real behavior requires 18 years + 1 day                                                                            | ✅ Done |
+| 3  | dob → age 75                           | Redirect to `/auth/login`                                                                                                                                        | ✅ Done |
+| 4  | dob → age 93                           | "Customer must be younger than 75 years old." — **see Issue #2**, real ceiling is 92, not the documented 75/76                                                   | ✅ Done |
+| 5  | First name missing                     | "First name is required"                                                                                                                                         | ✅ Done |
+| 6  | Last name missing                      | "Last name is required"                                                                                                                                          | ✅ Done |
+| 7  | Email missing                          | "Email is required"                                                                                                                                              | ✅ Done |
+| 8  | Password missing                       | "Password is required"                                                                                                                                           | ✅ Done |
+| 9  | Password, 7 characters                 | All requirement bullets stay unfulfilled (real-time UI state) — **see Issue #5**, submit error text claims a 6-character minimum but the app actually enforces 8 | ✅ Done |
+| 10 | Password, meets all requirements       | All requirement bullets turn green                                                                                                                               | ✅ Done |
+| 11 | Known-breached password                | "The given password has appeared in a data leak. Please choose a different password."                                                                            | ✅ Done |
+| 12 | First name, 41 characters              | "The first name field must not be greater than 40 characters."                                                                                                   | ✅ Done |
+| 13 | Last name, 21 characters               | "The last name field must not be greater than 20 characters."                                                                                                    | ✅ Done |
+| 14 | Street, 71 characters                  | "The address.street field must not be greater than 70 characters."                                                                                               | ✅ Done |
+| 15 | City, 41 characters                    | "The address.city field must not be greater than 40 characters."                                                                                                 | ✅ Done |
+| 16 | State, 41 characters                   | "The address.state field must not be greater than 40 characters." — real-time UI message renders slower in webkit, needs a scoped `{ timeout: 10000 }` override  | ✅ Done |
+| 17 | Postal code, 11 characters             | "The address.postal code field must not be greater than 10 characters."                                                                                          | ✅ Done |
+| 18 | Phone, 25 characters                   | "The phone field must not be greater than 24 characters."                                                                                                        | ✅ Done |
+| 19 | Phone contains `+`                     | "Only numbers are allowed."                                                                                                                                      | ✅ Done |
+| 20 | Email malformed / oversized local-part | "Email format is invalid" — **see Issue #4**, a missing-TLD email (`qatest123@gmail`) does NOT trigger this                                                      | ✅ Done |
+| 21 | Email already registered               | "A customer with this email address already exists." — **see Issue #3**, differs from the AC's documented text                                                   | ✅ Done |
+| 22 | All fields valid                       | Redirect to `/auth/login`                                                                                                                                        | ✅ Done |
+| 23 | Date of Birth missing                  | "Date of Birth is required"                                                                                                                                      | ✅ Done |
+| 24 | Date of Birth, invalid format          | "Please enter a valid date in YYYY-MM-DD format."                                                                                                                | ✅ Done |
+| 25 | Country missing                        | "Country is required"                                                                                                                                            | ✅ Done |
+| 26 | Postcode missing                       | "Postcode is required"                                                                                                                                           | ✅ Done |
+| 27 | House number missing                   | "House number is required"                                                                                                                                       | ✅ Done |
+| 28 | Street missing                         | "Street is required"                                                                                                                                             | ✅ Done |
+| 29 | City missing                           | "City is required"                                                                                                                                               | ✅ Done |
+| 30 | State missing                          | "State is required"                                                                                                                                              | ✅ Done |
+| 31 | Phone missing                          | "Phone is required."                                                                                                                                             | ✅ Done |
+| 32 | Phone contains letters                 | "Only numbers are allowed." — bonus error-guessing case beyond the original plan                                                                                 | ✅ Done |
 
 ## Issues Found
 
