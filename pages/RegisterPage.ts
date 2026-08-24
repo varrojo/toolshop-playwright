@@ -14,6 +14,7 @@ export interface RegisterFormData {
   email: string;
   password: string;
 }
+export const DEFAULT_PASSWORD = 'P@$$J0hnD03';
 
 export class RegisterPage {
   readonly firstNameInput: Locator;
@@ -94,6 +95,6 @@ function getDefaultValidRegisterData(): RegisterFormData {
     state: 'Tokyo',
     phone: '5551234',
     email: `john.doe.${Date.now()}@example.com`,
-    password: 'P@$$J0hnD03'
+    password: DEFAULT_PASSWORD
   };
 }
