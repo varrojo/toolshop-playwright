@@ -2,6 +2,20 @@
 
 Status: 🟢 Done — 32 of 32 scenarios done.
 
+Source: site's Testing Guide, feature #1 (Register).
+
+**Acceptance Criteria**
+
+- Age must be between 18 and 75 inclusive.
+- Email must be unique and in valid format.
+- All mandatory fields (first name, last name, email, password, confirm password) must be filled.
+- Name/address/phone fields respect max lengths and validation rules.
+- Password must be at least 8 characters, contain upper, lower, digit, and symbol, not be compromised, and match confirm password.
+
+**Techniques applied:** Boundary Value Analysis (age and password length), Equivalence Partitioning (valid/invalid email, password character rules, mandatory fields filled/missing), Decision Table (combinations of missing fields), Error Guessing (SQL injection, emoji, spaces in fields).
+
+## Scenarios
+
 | #   | Scenario                               | Expected result                                                                                                                                                  | Status  |
 | --- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | 1   | dob → age 17                           | "Customer must be 18 years old."                                                                                                                                 | ✅ Done |
