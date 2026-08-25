@@ -4,12 +4,12 @@ export const NEW_PASSWORD = 'welcome02';
 
 export class ForgotPasswordPage {
   readonly emailInput: Locator;
-  readonly forgotPasswordLink: Locator;
+  readonly resetPasswordButton: Locator;
   readonly errorBox: Locator;
 
   constructor(private page: Page) {
     this.emailInput = page.locator('[data-test="email"]');
-    this.forgotPasswordLink = page.locator('[data-test="forgot-password-submit"]');
+    this.resetPasswordButton = page.locator('[data-test="forgot-password-submit"]');
     this.errorBox = page.locator('[data-test="email-error"]');
   }
 
@@ -19,6 +19,6 @@ export class ForgotPasswordPage {
 
   async submitEmail(email: string) {
     await this.emailInput.fill(email);
-    await this.forgotPasswordLink.click();
+    await this.resetPasswordButton.click();
   }
 }

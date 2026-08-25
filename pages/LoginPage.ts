@@ -4,13 +4,13 @@ export class LoginPage {
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
-  readonly forgotPasswordButton: Locator;
+  readonly forgotPasswordLink: Locator;
 
   constructor(private page: Page) {
     this.emailInput = page.locator('[data-test="email"]');
     this.passwordInput = page.locator('[data-test="password"]');
     this.loginButton = page.locator('[data-test="login-submit"]');
-    this.forgotPasswordButton = page.locator('[data-test="forgot-password-link"]');
+    this.forgotPasswordLink = page.locator('[data-test="forgot-password-link"]');
   }
 
   async goto() {
@@ -24,6 +24,6 @@ export class LoginPage {
   }
 
   async forgotPassword() {
-    await this.forgotPasswordButton.click();
+    await this.forgotPasswordLink.click();
   }
 }
