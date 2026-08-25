@@ -70,6 +70,7 @@ test.describe('Register Page', () => {
       await expect(page.getByText('The first name field must not be greater than 40 characters.')).toBeVisible();
     });
   });
+
   test.describe('Last Name Validation', () => {
     test('should display error message for empty last name', async ({ page }) => {
       const invalidData: Partial<RegisterFormData> = {
@@ -292,6 +293,7 @@ test.describe('Register Page', () => {
       });
     });
   });
+
   test.describe('Phone Number Validation', () => {
     test('should display error message for empty phone number', async ({ page }) => {
       const invalidData: Partial<RegisterFormData> = {
@@ -326,6 +328,7 @@ test.describe('Register Page', () => {
       await expect(page.getByText('The phone field must not be greater than 24 characters.')).toBeVisible();
     });
   });
+  
   test.describe('All fields are valid', () => {
     test('should successfully create a user and redirect to login page', async ({ page }) => {
       await registerPage.fillForm();
