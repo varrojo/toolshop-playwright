@@ -126,6 +126,10 @@ test.describe('Customer Profile Page', () => {
       await expectValidationError(page, profilePage, 'phone', '', PROFILE_UPDATE_FAILURE_MESSAGE_EMPTY_FIELD);
     });
 
+    test('should display error message for blank street', async ({ page }) => {
+      await expectValidationError(page, profilePage, 'street', '', PROFILE_UPDATE_FAILURE_MESSAGE_EMPTY_FIELD);
+    });
+
     test('should display error message for blank postal code', async ({ page }) => {
       await expectValidationError(page, profilePage, 'postalCode', '', PROFILE_UPDATE_FAILURE_MESSAGE_EMPTY_FIELD);
     });

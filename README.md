@@ -80,7 +80,7 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 | 1   | [Register](docs/scenarios/register.md)                 | 🟢 Done — 32 of 32 scenarios done        |
 | 2   | [Login](docs/scenarios/login.md)                       | 🟢 Done — 14 of 14 scenarios done        |
 | 3   | [Forgot Password](docs/scenarios/forgot-password.md)   | 🟢 Done — 5 of 5 scenarios done          |
-| 4   | [Customer Profile](docs/scenarios/customer-profile.md) | 🟡 In progress — 11 of 27 scenarios done |
+| 4   | [Customer Profile](docs/scenarios/customer-profile.md) | 🟡 In progress — 20 of 27 scenarios done |
 | 5   | Customer Favorites                                     | ⚪ Not started                           |
 | 6   | Customer Invoices                                      | ⚪ Not started                           |
 | 7   | Customer Messages                                      | ⚪ Not started                           |
