@@ -1,6 +1,8 @@
 # Forgot Password — Scenario Plan
 
-Status: ⚪ Not started — 0 of 5 scenarios done.
+[← Back to README](../../README.md#scenarios-covered-per-module)
+
+Status: 🟢 Done — 5 of 5 scenarios done.
 
 Source: site's Testing Guide, feature #3 (Forgot Password).
 
@@ -14,13 +16,13 @@ Source: site's Testing Guide, feature #3 (Forgot Password).
 
 ## Scenarios
 
-| #   | Scenario                             | Expected result                                                                                                                                          | Status         |
-| --- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| 1   | Unregistered/unknown email            | "The selected email is invalid."                                                                                                                             | ⚪ Not started |
-| 2   | Empty email                           | "Email is required"                                                                                                                                          | ⚪ Not started |
-| 3   | Malformed email format                | `email-error` box is displayed but contains no text — **see Issue #1**                                                                                       | ⚪ Not started |
-| 4   | Valid registered email → login with new password | Notification shown (renders as the literal untranslated key `page.forgot-password.confirm`, not real message text); password reset to `welcome02`; user can log in with the new password | ⚪ Not started |
-| 5   | Valid registered email → old password rejected   | Same reset as #4; user can no longer log in with their old password                                                                                       | ⚪ Not started |
+| #   | Scenario                                         | Expected result                                                                                                                                                                          | Status  |
+| --- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| 1   | Unregistered/unknown email                       | "The selected email is invalid."                                                                                                                                                         | ✅ Done |
+| 2   | Empty email                                      | "Email is required"                                                                                                                                                                      | ✅ Done |
+| 3   | Malformed email format                           | `email-error` box is displayed but contains no text — **see Issue #1**                                                                                                                   | ✅ Done |
+| 4   | Valid registered email → login with new password | Notification shown (renders as the literal untranslated key `page.forgot-password.confirm`, not real message text); password reset to `welcome02`; user can log in with the new password | ✅ Done |
+| 5   | Valid registered email → old password rejected   | Same reset as #4; user can no longer log in with their old password                                                                                                                      | ✅ Done |
 
 ## Issues Found
 

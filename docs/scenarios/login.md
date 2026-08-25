@@ -1,5 +1,7 @@
 # Login — Scenario Plan
 
+[← Back to README](../../README.md#scenarios-covered-per-module)
+
 Status: 🟢 Done — 14 of 14 scenarios done.
 
 Source: site's Testing Guide, feature #2 (Login).

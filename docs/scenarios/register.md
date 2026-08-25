@@ -1,5 +1,7 @@
 # Register — Scenario Plan
 
+[← Back to README](../../README.md#scenarios-covered-per-module)
+
 Status: 🟢 Done — 32 of 32 scenarios done.
 
 Source: site's Testing Guide, feature #1 (Register).
