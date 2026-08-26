@@ -2,7 +2,7 @@
 
 [← Back to README](../../README.md#scenarios-covered-per-module)
 
-Status: 🟡 In progress — scenarios drafted, not yet implemented.
+Status: 🟡 In progress — 2 of 11 scenarios done.
 
 Source: site's Testing Guide, feature #5 (Customer Favorites).
 
@@ -22,8 +22,8 @@ Equivalence Partitioning against an "unavailable product" was considered but dro
 
 | #   | Scenario                                                              | Expected result                                                                                                                    | Status   |
 | --- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | Login with a fresh account, no favorites yet                          | "There are no favorites yet. In order to add favorites, please go to the product listing and mark some products as your favorite." | 📝 To Do |
-| 2   | Add a product to favorites from its detail page                       | "Product added to your favorites list." alert; product appears correctly in the favorites list                                     | 📝 To Do |
+| 1   | Login with a fresh account, no favorites yet                          | "There are no favorites yet. In order to add favorites, please go to the product listing and mark some products as your favorite." | ✅ Done  |
+| 2   | Add a product to favorites from its detail page                       | "Product added to your favorites list." alert; product appears correctly in the favorites list                                     | ✅ Done  |
 | 3   | Add the same product to favorites a second time                       | "Product already in your favorites list." alert; still only 1 entry for that product in the favorites list                         | 📝 To Do |
 | 4   | Click add-to-favorites 3 times on an already-favorited product        | "Product already in your favorites list." alert shown on each of the 3 clicks                                                      | 📝 To Do |
 | 5   | Add 2 different products to favorites                                 | Both products appear in the favorites list, with correct product details for each                                                  | 📝 To Do |

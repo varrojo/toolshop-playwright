@@ -5,12 +5,14 @@ export class NavBar {
   readonly navSignOutButton: Locator;
   readonly navSignInButton: Locator;
   readonly navHomeButton: Locator;
+  readonly navMyFavoritesButton: Locator;
 
   constructor(private page: Page) {
     this.navMenuButton = page.locator('[data-test="nav-menu"]');
     this.navSignOutButton = page.locator('[data-test="nav-sign-out"]');
     this.navSignInButton = page.locator('[data-test="nav-sign-in"]');
     this.navHomeButton = page.locator('[data-test="nav-home"]');
+    this.navMyFavoritesButton = page.locator('[data-test="nav-my-favorites"]');
   }
 
   async signOut() {
@@ -20,5 +22,10 @@ export class NavBar {
 
   async gotoHome() {
     await this.navHomeButton.click();
+  }
+
+  async gotoMyFavorites() {
+    await this.navMenuButton.click();
+    await this.navMyFavoritesButton.click();
   }
 }
