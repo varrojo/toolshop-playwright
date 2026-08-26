@@ -1,5 +1,15 @@
 import { test, expect } from '../fixtures/fixtures';
-import { ProfileFormData, ProfilePage, PROFILE_UPDATE_SUCCESS_MESSAGE, PROFILE_UPDATE_FAILURE_MESSAGE_EMPTY_FIELD } from '../pages/ProfilePage';
+import {
+  ProfileFormData,
+  ProfilePage,
+  PROFILE_UPDATE_SUCCESS_MESSAGE,
+  PROFILE_UPDATE_FAILURE_MESSAGE_EMPTY_FIELD,
+  CHANGE_PASSWORD_CURRENT_INCORRECT,
+  CHANGE_PASSWORD_NEW_AND_CONFIRM_DOES_NOT_MATCH,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_SAME_AS_CURRENT,
+  CHANGE_PASSWORD_NEW_REQUIRED
+} from '../pages/ProfilePage';
 import { AccountPage } from '../pages/AccountPage';
 import { LoginPage } from '../pages/LoginPage';
 import { Locator, Page } from '@playwright/test';
@@ -146,6 +156,108 @@ test.describe('Customer Profile Page', () => {
       await expectValidationError(page, profilePage, 'country', '', PROFILE_UPDATE_FAILURE_MESSAGE_EMPTY_FIELD);
     });
   });
+
+  test.describe('Change Password Updates', () => {
+    test('should display error message when new password is same as current password', async ({ page, registeredUser }) => {
+      const currentPassword = registeredUser.password;
+      const newPassword = registeredUser.password;
+      const confirmPassword = registeredUser.password;
+
+      await profilePage.updatePassword(currentPassword, newPassword, confirmPassword);
+
+      const expectedErrorMessage = CHANGE_PASSWORD_SAME_AS_CURRENT;
+      await expect(page.getByRole('alert').filter({ hasText: expectedErrorMessage })).toBeVisible();
+    });
+
+    test('should display error message when current password is blank', async ({ page, registeredUser }) => {
+      const currentPassword = '';
+      const newPassword = `${registeredUser.password}A`;
+      const confirmPassword = newPassword;
+
+      await profilePage.updatePassword(currentPassword, newPassword, confirmPassword);
+
+      const expectedErrorMessage = CHANGE_PASSWORD_CURRENT_INCORRECT;
+      await expect(page.getByRole('alert').filter({ hasText: expectedErrorMessage })).toBeVisible();
+    });
+
+    test('should display error message when all password fields are blank', async ({ page, registeredUser }) => {
+      const currentPassword = '';
+      const newPassword = '';
+      const confirmPassword = '';
+
+      await profilePage.updatePassword(currentPassword, newPassword, confirmPassword);
+
+      const expectedErrorMessage = CHANGE_PASSWORD_CURRENT_INCORRECT;
+      await expect(page.getByRole('alert').filter({ hasText: expectedErrorMessage })).toBeVisible();
+    });
+
+    test('should display error message when new password field is blank', async ({ page, registeredUser }) => {
+      const currentPassword = registeredUser.password;
+      const newPassword = '';
+      const confirmPassword = `${registeredUser.password}A`;
+
+      await profilePage.updatePassword(currentPassword, newPassword, confirmPassword);
+
+      const expectedErrorMessage = CHANGE_PASSWORD_NEW_REQUIRED;
+      await expect(page.getByRole('alert').filter({ hasText: expectedErrorMessage })).toBeVisible();
+    });
+
+    test('should display error message when new and confirm password does not match', async ({ page, registeredUser }) => {
+      const currentPassword = registeredUser.password;
+      const newPassword = `${registeredUser.password}A`;
+      const confirmPassword = `${registeredUser.password}B`;
+
+      await profilePage.updatePassword(currentPassword, newPassword, confirmPassword);
+
+      const expectedErrorMessage = CHANGE_PASSWORD_NEW_AND_CONFIRM_DOES_NOT_MATCH;
+      await expect(page.getByRole('alert').filter({ hasText: expectedErrorMessage })).toBeVisible();
+    });
+
+    test('should display error message when confirm password is blank', async ({ page, registeredUser }) => {
+      const currentPassword = registeredUser.password;
+      const newPassword = `${registeredUser.password}A`;
+      const confirmPassword = '';
+
+      await profilePage.updatePassword(currentPassword, newPassword, confirmPassword);
+
+      const expectedErrorMessage = CHANGE_PASSWORD_NEW_AND_CONFIRM_DOES_NOT_MATCH;
+      await expect(page.getByRole('alert').filter({ hasText: expectedErrorMessage })).toBeVisible();
+    });
+
+    test('should display confirmation message for successful change password and autologout the user', async ({ page, registeredUser }) => {
+      const currentPassword = registeredUser.password;
+      const newPassword = `${registeredUser.password}A`;
+      const confirmPassword = newPassword;
+
+      await profilePage.updatePassword(currentPassword, newPassword, confirmPassword);
+      await resetPasswordAndExpectLogout(page);
+    });
+
+    test('should be able to login using new password', async ({ page, registeredUser }) => {
+      const currentPassword = registeredUser.password;
+      const newPassword = `${registeredUser.password}A`;
+      const confirmPassword = newPassword;
+
+      await profilePage.updatePassword(currentPassword, newPassword, confirmPassword);
+      await resetPasswordAndExpectLogout(page);
+
+      await loginPage.login(registeredUser.email, newPassword);
+      await expect(page).toHaveURL(/.*\/account/);
+    });
+
+    test('should not be able to login using old password', async ({ page, registeredUser }) => {
+      const currentPassword = registeredUser.password;
+      const newPassword = `${registeredUser.password}A`;
+      const confirmPassword = newPassword;
+
+      await profilePage.updatePassword(currentPassword, newPassword, confirmPassword);
+      await resetPasswordAndExpectLogout(page);
+
+      await loginPage.login(registeredUser.email, currentPassword);
+      await expect(page.getByText('Invalid email or password')).toBeVisible();
+      await expect(page).toHaveURL('/auth/login');
+    });
+  });
 });
 
 function fieldInput(profilePage: ProfilePage, field: keyof ProfileFormData): Locator {
@@ -170,8 +282,15 @@ async function expectSuccessfulUpdate(page: Page, profilePage: ProfilePage, fiel
   await profilePage.goto();
   await expect(fieldInput(profilePage, field)).toHaveValue(value);
 }
+
 async function expectValidationError(page: Page, profilePage: ProfilePage, field: keyof ProfileFormData, value: string, message: string) {
   await profilePage.fillForm({ [field]: value } as Partial<ProfileFormData>);
   await profilePage.updateProfile();
   await expect(page.getByRole('alert').filter({ hasText: message })).toBeVisible();
+}
+
+async function resetPasswordAndExpectLogout(page: Page) {
+  const expectedMessage = CHANGE_PASSWORD_SUCCESS;
+  await expect(page.getByRole('alert').filter({ hasText: expectedMessage })).toBeVisible();
+  await page.waitForURL('/auth/login');
 }

@@ -13,6 +13,11 @@ export interface ProfileFormData {
 
 export const PROFILE_UPDATE_SUCCESS_MESSAGE = 'Your profile is successfully updated!';
 export const PROFILE_UPDATE_FAILURE_MESSAGE_EMPTY_FIELD = 'Please correct the highlighted fields before saving.';
+export const CHANGE_PASSWORD_SUCCESS = 'Your password is successfully updated!';
+export const CHANGE_PASSWORD_CURRENT_INCORRECT = 'Your current password does not matches with the password.';
+export const CHANGE_PASSWORD_NEW_AND_CONFIRM_DOES_NOT_MATCH = 'The new password field confirmation does not match.';
+export const CHANGE_PASSWORD_SAME_AS_CURRENT = 'New Password cannot be same as your current password.';
+export const CHANGE_PASSWORD_NEW_REQUIRED = 'The new password field is required.';
 
 export interface ChangePasswordData {
   currentPassword: string;
@@ -31,6 +36,10 @@ export class ProfilePage {
   readonly stateInput: Locator;
   readonly countryInput: Locator;
   readonly updateProfileButton: Locator;
+  readonly currentPasswordInput: Locator;
+  readonly newPasswordInput: Locator;
+  readonly confirmPasswordInput: Locator;
+  readonly updatePasswordButton: Locator;
   constructor(private page: Page) {
     this.firstNameInput = page.locator('[data-test="first-name"]');
     this.lastNameInput = page.locator('[data-test="last-name"]');
@@ -42,6 +51,11 @@ export class ProfilePage {
     this.stateInput = page.locator('[data-test="state"]');
     this.countryInput = page.locator('[data-test="country"]');
     this.updateProfileButton = page.locator('[data-test="update-profile-submit"]');
+
+    this.currentPasswordInput = page.locator('[data-test="current-password"]');
+    this.newPasswordInput = page.locator('[data-test="new-password"]');
+    this.confirmPasswordInput = page.locator('[data-test="new-password-confirm"]');
+    this.updatePasswordButton = page.locator('[data-test="change-password-submit"]');
   }
 
   async fillForm(overrides: Partial<ProfileFormData> = {}) {
@@ -85,5 +99,12 @@ export class ProfilePage {
       return !!el && el.value !== '';
     });
     await this.page.waitForLoadState('networkidle');
+  }
+
+  async updatePassword(currentPassword: string, newPassword: string, confirmPassword: string) {
+    await this.currentPasswordInput.fill(currentPassword);
+    await this.newPasswordInput.fill(newPassword);
+    await this.confirmPasswordInput.fill(confirmPassword);
+    await this.updatePasswordButton.click();
   }
 }

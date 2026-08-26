@@ -75,22 +75,22 @@ git push -u origin main
 
 The Testing Guide breaks the site into 18 features. Each is planned as its own spec file, worked one feature at a time. Full scenario tables (and any issues found) live in [`docs/scenarios/`](docs/scenarios/), one file per module, linked below once that module has a plan.
 
-| #   | Module                                                 | Status                                   |
-| --- | ------------------------------------------------------ | ---------------------------------------- |
-| 1   | [Register](docs/scenarios/register.md)                 | 🟢 Done — 32 of 32 scenarios done        |
-| 2   | [Login](docs/scenarios/login.md)                       | 🟢 Done — 14 of 14 scenarios done        |
-| 3   | [Forgot Password](docs/scenarios/forgot-password.md)   | 🟢 Done — 5 of 5 scenarios done          |
-| 4   | [Customer Profile](docs/scenarios/customer-profile.md) | 🟡 In progress — 20 of 27 scenarios done |
-| 5   | Customer Favorites                                     | ⚪ Not started                           |
-| 6   | Customer Invoices                                      | ⚪ Not started                           |
-| 7   | Customer Messages                                      | ⚪ Not started                           |
-| 8   | Locked Account                                         | ⚪ Not started                           |
-| 9   | Multi-Factor Authentication (MFA)                      | ⚪ Not started                           |
-| 10  | Contact Form                                           | ⚪ Not started                           |
-| 11  | Product Listing                                        | ⚪ Not started                           |
-| 12  | Category Page                                          | ⚪ Not started                           |
-| 13  | Product Detail Page                                    | ⚪ Not started                           |
-| 14  | Shopping Cart                                          | ⚪ Not started                           |
-| 15  | Checkout + Payment                                     | ⚪ Not started                           |
-| 16  | Geolocation Discount                                   | ⚪ Not started                           |
-| 17  | Combined Product Discount                              | ⚪ Not started                           |
+| #   | Module                                                 | Status                            |
+| --- | ------------------------------------------------------ | --------------------------------- |
+| 1   | [Register](docs/scenarios/register.md)                 | 🟢 Done — 32 of 32 scenarios done |
+| 2   | [Login](docs/scenarios/login.md)                       | 🟢 Done — 14 of 14 scenarios done |
+| 3   | [Forgot Password](docs/scenarios/forgot-password.md)   | 🟢 Done — 5 of 5 scenarios done   |
+| 4   | [Customer Profile](docs/scenarios/customer-profile.md) | 🟢 Done — 29 of 29 scenarios done |
+| 5   | Customer Favorites                                     | ⚪ Not started                    |
+| 6   | Customer Invoices                                      | ⚪ Not started                    |
+| 7   | Customer Messages                                      | ⚪ Not started                    |
+| 8   | Locked Account                                         | ⚪ Not started                    |
+| 9   | Multi-Factor Authentication (MFA)                      | ⚪ Not started                    |
+| 10  | Contact Form                                           | ⚪ Not started                    |
+| 11  | Product Listing                                        | ⚪ Not started                    |
+| 12  | Category Page                                          | ⚪ Not started                    |
+| 13  | Product Detail Page                                    | ⚪ Not started                    |
+| 14  | Shopping Cart                                          | ⚪ Not started                    |
+| 15  | Checkout + Payment                                     | ⚪ Not started                    |
+| 16  | Geolocation Discount                                   | ⚪ Not started                    |
+| 17  | Combined Product Discount                              | ⚪ Not started                    |
