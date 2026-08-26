@@ -292,5 +292,6 @@ async function expectValidationError(page: Page, profilePage: ProfilePage, field
 async function resetPasswordAndExpectLogout(page: Page) {
   const expectedMessage = CHANGE_PASSWORD_SUCCESS;
   await expect(page.getByRole('alert').filter({ hasText: expectedMessage })).toBeVisible();
-  await page.waitForURL('/auth/login');
+  await page.waitForTimeout(5000);
+  await expect(page).toHaveURL('/auth/login');
 }
