@@ -27,7 +27,7 @@ test.describe('Customer Profile Page', () => {
     await loginPage.login(registeredUser.email, registeredUser.password);
     await expect(page).toHaveURL(/.*\/account/);
 
-    await accountPage.goto();
+    await accountPage.gotoProfile();
     await profilePage.waitUntilLoaded();
     await expect(page).toHaveURL('/account/profile');
   });
