@@ -19,12 +19,6 @@ export const CHANGE_PASSWORD_NEW_AND_CONFIRM_DOES_NOT_MATCH = 'The new password 
 export const CHANGE_PASSWORD_SAME_AS_CURRENT = 'New Password cannot be same as your current password.';
 export const CHANGE_PASSWORD_NEW_REQUIRED = 'The new password field is required.';
 
-export interface ChangePasswordData {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
 export class ProfilePage {
   readonly firstNameInput: Locator;
   readonly lastNameInput: Locator;
