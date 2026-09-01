@@ -3,6 +3,7 @@ import { Page, Locator } from '@playwright/test';
 export const PRODUCT_ADDED_TO_FAVORITES = 'Product added to your favorites list.';
 export const PRODUCT_ALREADY_ADDED_TO_FAVORITES = 'Product already in your favorites list.';
 export const UNAUTHORIZED_TO_ADD_TO_FAVORITES = 'Unauthorized, can not add product to your favorite list.';
+export const PRODUCT_ADDED_TO_CART = 'Product added to shopping cart.';
 
 export class ProductDetailsPage {
   readonly addToCartButton: Locator;
@@ -19,5 +20,9 @@ export class ProductDetailsPage {
 
   async addToFavorite() {
     await this.addToFavoritesButton.click();
+  }
+
+  async addToCart() {
+    await this.addToCartButton.click();
   }
 }

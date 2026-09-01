@@ -2,7 +2,7 @@
 
 [← Back to README](../../README.md#scenarios-covered-per-module)
 
-Status: 🟡 In progress — 0 of 10 scenarios done.
+Status: 🟡 In progress — 4 of 10 scenarios done.
 
 Source: site's Testing Guide, feature #6 (Customer Invoices).
 
@@ -36,15 +36,17 @@ Pagination (scenario #10) needs 16+ invoices to trigger a real second page — t
 
 | #   | Scenario                                                                        | Expected result                                                                                                            | Status   |
 | --- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | Login with a fresh account, no invoices yet                                     | Invoices list shows only the table header row, no data rows, no explicit empty-state message                               | 📝 To Do |
-| 2   | Navigate to invoices via nav-menu → "My invoices"                               | Correct invoices list is shown (nav-menu path)                                                                             | 📝 To Do |
-| 3   | Navigate to invoices via Account dashboard → "Invoices" button                  | Correct invoices list is shown (direct-link path)                                                                          | 📝 To Do |
-| 4   | Complete a purchase                                                             | A new invoice appears in the list with correct Invoice Number, Invoice Date, and Total                                     | 📝 To Do |
+| 1   | Login with a fresh account, no invoices yet                                     | Invoices list shows only the table header row, no data rows, no explicit empty-state message                               | ✅ Done  |
+| 2   | Navigate to invoices via nav-menu → "My invoices"                               | Correct invoices list is shown (nav-menu path)                                                                             | ✅ Done  |
+| 3   | Navigate to invoices via Account dashboard → "Invoices" button                  | Correct invoices list is shown (direct-link path)                                                                          | ✅ Done  |
+| 4   | Complete a purchase                                                             | A new invoice appears in the list with correct Invoice Number, Invoice Date, and Total                                     | ✅ Done  |
 | 5   | Click an invoice in the list                                                    | Navigates to the detail page; Invoice Number, Invoice Date, and Total match the list row (State Transition Testing)        | 📝 To Do |
 | 6   | Complete 2 separate purchases                                                   | Both invoices appear in the list, each with correct individual data, not cross-contaminated                                | 📝 To Do |
 | 7   | Click "Download PDF" on an invoice detail page                                  | A PDF file downloads successfully (`.pdf`, non-zero size) — content not verified, see note below                           | 📝 To Do |
 | 8   | Attempt to access the invoices list while logged out                            | Redirects to the login page (EP: logged-in vs logged-out)                                                                  | 📝 To Do |
 | 9   | Attempt direct URL access to another customer's invoice                         | 404 — "This invoice doesn't exist." (Error Guessing)                                                                       | 📝 To Do |
 | 10  | Pagination: view invoices list for an account with 16+ invoices (site-provided) | A "next page" control exists; navigating to it shows different invoices than page 1 (read-only, structural assertion only) | 📝 To Do |
+
+**Scenario 4 flaky:** completing checkout requires two clicks of the same "Confirm" button (`[data-test="finish"]`) — the first submits payment (shows "Payment was successful" on the same Payment step), the second actually places the order and navigates to the "Thanks for your order" confirmation page. That second navigation occasionally takes longer than expected under concurrent test load (multiple browser projects running checkout in parallel against the shared public demo backend) — confirmed by testing: the same test passed reliably running alone (~16-18s) but intermittently failed when run alongside the other two browser projects, even after bumping the test's own timeout to 45s (`test.setTimeout(45000)`) and the confirmation assertion's timeout to 15s. This is treated as a known, accepted flake tied to the shared demo site's backend under load — not a bug in the test itself — same category as the pre-existing `registeredUser` fixture flake seen intermittently on webkit. Rerun if hit.
 
 **Scenario 7 content not verified:** the AC's testing guidance says "open file, verify correct content," which would need a PDF-parsing library (e.g. `pdf-parse`) to extract and assert on text — Playwright itself only hands back the raw downloaded file, it doesn't parse PDF content. Decided to skip that for now rather than add a new dependency for one scenario. This is a deliberate, acknowledged gap, not full AC coverage: scenario #7 as scoped only proves a PDF downloads successfully (download event fires, `.pdf` extension, non-zero size) — it does **not** verify the invoice number/total/line items inside the PDF are correct. Revisit if `pdf-parse` (or similar) becomes worth adding.
