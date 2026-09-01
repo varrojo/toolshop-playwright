@@ -108,18 +108,22 @@ async function assertInvoiceRow(invoicesPage: InvoicesPage, invoiceNumber: strin
 }
 
 async function checkout(checkoutPage: CheckoutPage) {
+  // Cart
   await checkoutPage.proceed1Button.click();
+
+  // Sign In
   await checkoutPage.proceed2Button.click();
 
+  // Billing Address
   await checkoutPage.billingCountry.selectOption('PH');
   await checkoutPage.billingPostalCode.fill('1600');
   await checkoutPage.billingHouseNumber.fill('123');
   await checkoutPage.billingStreet.fill('Brenda Knoll');
   await checkoutPage.billingCity.fill('New Brennon');
   await checkoutPage.billingState.fill('Utah');
-
   await checkoutPage.proceed3Button.click();
 
+  // Payment
   await checkoutPage.paymentMethod.selectOption('cash-on-delivery');
   await checkoutPage.finishButton.click();
 }
