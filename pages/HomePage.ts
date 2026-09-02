@@ -12,7 +12,7 @@ export class HomePage {
   }
 
   async getProductID(productName: string): Promise<string> {
-    const dataTest = await this.page.locator('a.card').filter({ hasText: productName }).getAttribute('data-test');
+    const dataTest = await this.page.locator('a.card').filter({ has: this.page.locator('[data-test="product-name"]', { hasText: new RegExp(`^\\s*${productName}\\s*$`) }) }).getAttribute('data-test');
     if (!dataTest) {
       throw new Error(`Expected a data-test attribute on the card for "${productName}", got null`);
     }

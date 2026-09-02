@@ -3,6 +3,28 @@ import { Page, Locator } from '@playwright/test';
 export const EMPTY_CART_TEXT = 'The cart is empty. Nothing to display.';
 export const PAYMENT_SUCCESS_TEXT = 'Payment was successful';
 
+export const BILLING_ADDRESS = {
+  country: 'PH',
+  postalCode: '1600',
+  houseNumber: '123',
+  street: 'Brenda Knoll',
+  city: 'New Brennon',
+  state: 'Utah'
+};
+
+export const DEFAULT_PRODUCTS = [
+  {
+    productName: 'Combination Pliers',
+    productPriceWithoutSpace: '$14.15',
+    productPriceWithSpace: '$ 14.15'
+  },
+  {
+    productName: 'Pliers',
+    productPriceWithoutSpace: '$12.01',
+    productPriceWithSpace: '$ 12.01'
+  }
+];
+
 export class CheckoutPage {
   readonly proceed1Button: Locator; // Proceed to Sign In
 

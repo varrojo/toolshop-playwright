@@ -4,11 +4,13 @@ export class InvoicesPage {
   readonly rows: Locator;
   readonly headers: Locator;
   readonly headerCells: Locator;
+  readonly detailsButton: Locator;
 
   constructor(private page: Page) {
     this.rows = page.locator('tbody tr');
     this.headers = page.locator('thead tr');
     this.headerCells = this.headers.locator('th');
+    this.detailsButton = page.locator('a', { hasText: 'Details' });
   }
 
   row(invoiceNumber: string) {
@@ -26,7 +28,7 @@ export class InvoicesPage {
   }
 
   async clickDetails(invoiceNumber: string) {
-    await this.row(invoiceNumber).getByRole('link', { name: 'Details' }).click();
+    await this.row(invoiceNumber).locator('a', { hasText: 'Details' }).click();
   }
 
   async allInvoiceNumbers() {
