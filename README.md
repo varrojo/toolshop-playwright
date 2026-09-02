@@ -94,3 +94,11 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 | 15  | Checkout + Payment                                         | ⚪ Not started                                |
 | 16  | Geolocation Discount                                       | ⚪ Not started                                |
 | 17  | Combined Product Discount                                  | ⚪ Not started                                |
+
+## API Testing Coverage
+
+The UI Testing Guide table above covers the site's 18 documented features end-to-end through the browser. Separately, the site exposes a full REST API with a public OpenAPI spec (Swagger UI at `https://api.practicesoftwaretesting.com/api/documentation`, 57 documented paths) — this table tracks API-level coverage of that same backend, tested directly via Playwright's `request` fixture rather than through the UI. One doc per API area, same convention as the UI modules.
+
+| # | API Area | Status |
+| - | - | - |
+| 1 | [Authentication](docs/scenarios/api-authentication.md) | 📝 Planned — 0 of 14 scenarios done |
