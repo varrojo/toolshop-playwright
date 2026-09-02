@@ -134,7 +134,7 @@ test.describe('Customer Invoices Page', () => {
         invoiceDetailsPage,
         invoiceNumber,
         invoiceDate,
-        DEFAULT_PRODUCTS[0].productPriceWithSpace, // total display has space between currency symbol and amount, while the invoices page does not
+        DEFAULT_PRODUCTS[0].productPriceWithSpace, // Total display has space between currency symbol and amount, while the invoices page does not
         BILLING_ADDRESS.street,
         productName,
         DEFAULT_PRODUCTS[0].productPriceWithoutSpace
@@ -174,7 +174,7 @@ test.describe('Customer Invoices Page', () => {
       await expect(page).toHaveURL('/account/invoices');
       await assertInvoicesHeader(invoicesPage);
 
-      // iterate through the invoice numbers and assert each one
+      // Iterate through the invoice numbers and assert each one
       for (let i = 0; i < invoiceNumber.length; i++) {
         await assertInvoiceRow(invoicesPage, invoiceNumber[i], BILLING_ADDRESS.street, DEFAULT_PRODUCTS[i].productPriceWithoutSpace);
 
@@ -238,7 +238,7 @@ test.describe('Customer Invoices Page', () => {
       const firstInvoiceNumberFirstUser = (await invoicesPage.allInvoiceNumbers())[0];
       await invoicesPage.clickDetails(firstInvoiceNumberFirstUser);
       await expect(page).toHaveURL(/\/account\/invoices\/.+/);
-      const invoiceUrl = page.url(); // save the url of the invoice details page for later use
+      const invoiceUrl = page.url(); // Save the url of the invoice details page for later use
 
       await navBar.signOut();
       await loginPage.goto();
@@ -258,11 +258,34 @@ test.describe('Customer Invoices Page', () => {
       await page.goto(invoiceUrl);
       await expect(page.getByText(INVOICE_DOES_NOT_EXIST_TEXT)).toBeVisible();
     });
+
+    // This seeded user has more than 15 invoices, so we can test the pagination
+    test('should be able to navigate to using the pagination when there are more than 15 invoices', async ({ page }) => {
+      await navBar.gotoInvoices();
+      await expect(page).toHaveURL('/account/invoices');
+      await assertInvoicesHeader(invoicesPage);
+
+      const page1InvoiceNumbers = await invoicesPage.allInvoiceNumbers();
+      expect(page1InvoiceNumbers.length).toBeGreaterThanOrEqual(15);
+
+      // Navigate to the next page and assert that the invoice numbers are different from the first page
+      await invoicesPage.gotoNextPage();
+      await expect(invoicesPage.rows).not.toContainText(page1InvoiceNumbers);
+
+      const page2InvoiceNumbers = await invoicesPage.allInvoiceNumbers();
+      expect(page2InvoiceNumbers).not.toEqual(page1InvoiceNumbers);
+
+      // Navigate back to the previous page and assert that the invoice numbers are the same as the first page
+      await invoicesPage.gotoPreviousPage();
+      await expect(invoicesPage.rows).toContainText(page1InvoiceNumbers);
+      const page1InvoiceNumbersAgain = await invoicesPage.allInvoiceNumbers();
+      expect(page1InvoiceNumbersAgain).toEqual(page1InvoiceNumbers);
+    });
   });
 
   test.describe('User Not Signed In', () => {
     test('should be redirected to login page when trying to access invoices page', async ({ page }) => {
-      // directly navigate to the invoices page without signing in
+      // Directly navigate to the invoices page without signing in
       await page.goto('/account/invoices');
       await expect(page).toHaveURL(/\/auth\/login$/, { timeout: 15000 });
     });
@@ -277,8 +300,8 @@ async function assertInvoicesHeader(invoicesPage: InvoicesPage) {
 async function assertInvoiceRow(invoicesPage: InvoicesPage, invoiceNumber: string, billingAddress: string, total: string) {
   const rowData = await invoicesPage.getRowData(invoiceNumber);
 
-  const OFFSET_HOURS = 8; // site's server clock is 8h behind local
-  const TOLERANCE_MS = 5 * 60 * 1000; // absorb latency between purchase and assertion
+  const OFFSET_HOURS = 8; // Site's server clock is 8h behind local
+  const TOLERANCE_MS = 5 * 60 * 1000; // Absorb latency between purchase and assertion
   const expectedServerTime = Date.now() - OFFSET_HOURS * 60 * 60 * 1000;
   const actualTime = new Date(rowData.date.replace(' ', 'T')).getTime();
 

@@ -23,12 +23,16 @@ export class InvoicesPage {
   readonly headers: Locator;
   readonly headerCells: Locator;
   readonly detailsButton: Locator;
+  readonly paginationNextButton: Locator;
+  readonly paginationPreviousButton: Locator;
 
   constructor(private page: Page) {
     this.rows = page.locator('tbody tr');
     this.headers = page.locator('thead tr');
     this.headerCells = this.headers.locator('th');
     this.detailsButton = page.locator('a', { hasText: 'Details' });
+    this.paginationNextButton = page.locator('[data-test="pagination-next"]');
+    this.paginationPreviousButton = page.locator('[data-test="pagination-prev"]');
   }
 
   row(invoiceNumber: string) {
@@ -51,5 +55,13 @@ export class InvoicesPage {
 
   async allInvoiceNumbers() {
     return this.rows.locator('td:nth-child(1)').allInnerTexts();
+  }
+
+  async gotoNextPage() {
+    await this.paginationNextButton.click();
+  }
+
+  async gotoPreviousPage() {
+    await this.paginationPreviousButton.click();
   }
 }
