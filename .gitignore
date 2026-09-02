@@ -10,3 +10,6 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 notes.ts
+
+# Interview prep (personal notes, not portfolio content)
+/interview-prep/
