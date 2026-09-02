@@ -1,12 +1,11 @@
 import { Page, Locator } from '@playwright/test';
-
 export class InvoiceDetailsPage {
   readonly invoiceNumberLabel: Locator;
   readonly invoiceDateLabel: Locator;
   readonly totalLabel: Locator;
   readonly streetLabel: Locator;
   readonly postalCodeLabel: Locator;
-  readonly cityLabel: Locator
+  readonly cityLabel: Locator;
   readonly stateLabel: Locator;
   readonly countryLabel: Locator;
 
@@ -15,6 +14,8 @@ export class InvoiceDetailsPage {
   readonly productNameCells: Locator;
   readonly productPriceCells: Locator;
   readonly productPriceTotalCells: Locator;
+
+  readonly downloadPDFButton: Locator;
 
   constructor(private page: Page) {
     this.invoiceNumberLabel = page.getByLabel('Invoice Number');
@@ -32,5 +33,12 @@ export class InvoiceDetailsPage {
     this.productNameCells = this.productRows.locator('td:nth-child(2)');
     this.productPriceCells = this.productRows.locator('td:nth-child(3)');
     this.productPriceTotalCells = this.productRows.locator('td:nth-child(4)');
+
+    this.downloadPDFButton = page.getByRole('button', { name: 'Download PDF' });
+  }
+
+  async downloadPDF() {
+    const [download] = await Promise.all([this.page.waitForEvent('download'), this.downloadPDFButton.click()]);
+    return download;
   }
 }

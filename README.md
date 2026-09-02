@@ -82,7 +82,7 @@ The Testing Guide breaks the site into 18 features. Each is planned as its own s
 | 3   | [Forgot Password](docs/scenarios/forgot-password.md)       | 🟢 Done — 5 of 5 scenarios done               |
 | 4   | [Customer Profile](docs/scenarios/customer-profile.md)     | 🟢 Done — 29 of 29 scenarios done             |
 | 5   | [Customer Favorites](docs/scenarios/customer-favorites.md) | 🟢 Done — 11 of 12 scenarios done (1 skipped) |
-| 6   | [Customer Invoices](docs/scenarios/customer-invoices.md)   | 🟡 In progress — 6 of 10 scenarios done       |
+| 6   | [Customer Invoices](docs/scenarios/customer-invoices.md)   | 🟡 In progress — 7 of 10 scenarios done       |
 | 7   | Customer Messages                                          | ⚪ Not started                                |
 | 8   | Locked Account                                             | ⚪ Not started                                |
 | 9   | Multi-Factor Authentication (MFA)                          | ⚪ Not started                                |

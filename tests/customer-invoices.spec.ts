@@ -2,11 +2,12 @@ import { test, expect } from '../fixtures/fixtures';
 import { AccountPage } from '../pages/AccountPage';
 import { CheckoutPage, PAYMENT_SUCCESS_TEXT, BILLING_ADDRESS, DEFAULT_PRODUCTS } from '../pages/CheckoutPage';
 import { InvoiceDetailsPage } from '../pages/InvoiceDetailsPage';
-import { InvoicesPage } from '../pages/InvoicesPage';
+import { InvoicesPage, SEEDED_USER1, SEEDED_USER2, INVOICE_DOES_NOT_EXIST_TEXT } from '../pages/InvoicesPage';
 import { LoginPage } from '../pages/LoginPage';
 import { HomePage } from '../pages/HomePage';
 import { PRODUCT_ADDED_TO_CART, ProductDetailsPage } from '../pages/ProductDetailsPage';
 import { NavBar } from '../components/NavBar';
+import fs from 'fs';
 
 test.describe('Customer Invoices Page', () => {
   let accountPage: AccountPage;
@@ -17,22 +18,22 @@ test.describe('Customer Invoices Page', () => {
   let homePage: HomePage;
   let productDetailsPage: ProductDetailsPage;
   let invoiceDetailsPage: InvoiceDetailsPage;
-  test.beforeEach(async ({ page, registeredUser }) => {
-    loginPage = new LoginPage(page);
-    accountPage = new AccountPage(page);
-    checkoutPage = new CheckoutPage(page);
-    invoicesPage = new InvoicesPage(page);
-    homePage = new HomePage(page);
-    navBar = new NavBar(page);
-    productDetailsPage = new ProductDetailsPage(page);
-    invoiceDetailsPage = new InvoiceDetailsPage(page);
-
-    await loginPage.goto();
-    await loginPage.login(registeredUser.email, registeredUser.password);
-    await expect(page).toHaveURL(/.*\/account/);
-  });
 
   test.describe('User Signed In', () => {
+    test.beforeEach(async ({ page, registeredUser }) => {
+      loginPage = new LoginPage(page);
+      accountPage = new AccountPage(page);
+      checkoutPage = new CheckoutPage(page);
+      invoicesPage = new InvoicesPage(page);
+      homePage = new HomePage(page);
+      navBar = new NavBar(page);
+      productDetailsPage = new ProductDetailsPage(page);
+      invoiceDetailsPage = new InvoiceDetailsPage(page);
+
+      await loginPage.goto();
+      await loginPage.login(registeredUser.email, registeredUser.password);
+      await expect(page).toHaveURL(/.*\/account/);
+    });
     test('should display empty invoices for new user', async ({ page }) => {
       await accountPage.gotoInvoices();
       await expect(page).toHaveURL('/account/invoices');
@@ -195,6 +196,75 @@ test.describe('Customer Invoices Page', () => {
         await navBar.gotoInvoices();
         await expect(page).toHaveURL('/account/invoices');
       }
+    });
+  });
+
+  test.describe('User from Seeded Accounts', () => {
+    test.beforeEach(async ({ page }) => {
+      loginPage = new LoginPage(page);
+      invoicesPage = new InvoicesPage(page);
+      invoiceDetailsPage = new InvoiceDetailsPage(page);
+      navBar = new NavBar(page);
+
+      await loginPage.goto();
+      await loginPage.login(SEEDED_USER1.email, SEEDED_USER1.password);
+      await expect(page).toHaveURL(/.*\/account/);
+    });
+
+    test('should be able to download a PDF for an invoice', async ({ page }, testInfo) => {
+      await navBar.gotoInvoices();
+      await expect(page).toHaveURL('/account/invoices');
+      await assertInvoicesHeader(invoicesPage);
+
+      const firstInvoiceNumber = (await invoicesPage.allInvoiceNumbers())[0];
+      await invoicesPage.clickDetails(firstInvoiceNumber);
+      await expect(page).toHaveURL(/\/account\/invoices\/.+/);
+
+      const download = await invoiceDetailsPage.downloadPDF();
+
+      const filePath = testInfo.outputPath(download.suggestedFilename());
+      await download.saveAs(filePath);
+      await expect(download.suggestedFilename()).toBe(`${firstInvoiceNumber}.pdf`);
+
+      const stats = fs.statSync(filePath);
+      expect(stats.size).toBeGreaterThan(0);
+    });
+
+    test('should not display invoice to other users', async ({ page }) => {
+      await navBar.gotoInvoices();
+      await expect(page).toHaveURL('/account/invoices');
+      await assertInvoicesHeader(invoicesPage);
+
+      const firstInvoiceNumberFirstUser = (await invoicesPage.allInvoiceNumbers())[0];
+      await invoicesPage.clickDetails(firstInvoiceNumberFirstUser);
+      await expect(page).toHaveURL(/\/account\/invoices\/.+/);
+      const invoiceUrl = page.url(); // save the url of the invoice details page for later use
+
+      await navBar.signOut();
+      await loginPage.goto();
+      await loginPage.login(SEEDED_USER2.email, SEEDED_USER2.password);
+      await expect(page).toHaveURL(/.*\/account/);
+
+      await navBar.gotoInvoices();
+      await expect(page).toHaveURL('/account/invoices');
+      await assertInvoicesHeader(invoicesPage);
+
+      // Check that second user can access own invoice details page
+      const firstInvoiceNumberSecondUser = (await invoicesPage.allInvoiceNumbers())[0];
+      await invoicesPage.clickDetails(firstInvoiceNumberSecondUser);
+      await expect(page).toHaveURL(/\/account\/invoices\/.+/);
+
+      // Second user attempt to access the invoice details page of the first user
+      await page.goto(invoiceUrl);
+      await expect(page.getByText(INVOICE_DOES_NOT_EXIST_TEXT)).toBeVisible();
+    });
+  });
+
+  test.describe('User Not Signed In', () => {
+    test('should be redirected to login page when trying to access invoices page', async ({ page }) => {
+      // directly navigate to the invoices page without signing in
+      await page.goto('/account/invoices');
+      await expect(page).toHaveURL(/\/auth\/login$/, { timeout: 15000 });
     });
   });
 });

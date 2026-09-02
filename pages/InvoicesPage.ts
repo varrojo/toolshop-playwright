@@ -1,5 +1,23 @@
 import { Page, Locator } from '@playwright/test';
 
+function requireEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) throw new Error(`Missing required environment variable: ${name}`);
+  return value;
+}
+
+export const SEEDED_USER1 = {
+  email: requireEnv('SEEDED_USER_EMAIL1'),
+  password: requireEnv('SEEDED_USER_PASSWORD1')
+};
+
+export const SEEDED_USER2 = {
+  email: requireEnv('SEEDED_USER_EMAIL2'),
+  password: requireEnv('SEEDED_USER_PASSWORD2')
+};
+
+export const INVOICE_DOES_NOT_EXIST_TEXT = `This invoice doesn't exist.`;
+
 export class InvoicesPage {
   readonly rows: Locator;
   readonly headers: Locator;
